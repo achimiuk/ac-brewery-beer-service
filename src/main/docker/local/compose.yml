@@ -34,18 +34,7 @@ services:
     environment:
       SPRING_APPLICATION_JSON: '{ "spring" : { "application": {"name":"inventory-service"},"cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
       SPRING_PROFILES_ACTIVE: local-discovery,compose
-  order-service:
-    image: achimiuk/ac-brewery-order-service
-    ports:
-      - 8081:8081
-    depends_on:
-      - eureka
-      - config
-      - jms
-      - zipkin
-    environment:
-      SPRING_APPLICATION_JSON: '{"spring": {"application": {"name":"order-service"},"cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
-      SPRING_PROFILES_ACTIVE: local-discovery,compose
+    restart: on-failure
   beer-service:
     image: achimiuk/ac-brewery-beer-service
     ports:
@@ -55,6 +44,48 @@ services:
       - config
       - jms
       - zipkin
+      - inventory-service
     environment:
       SPRING_APPLICATION_JSON: '{"spring": {"application": {"name":"beer-service"}, "cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
       SPRING_PROFILES_ACTIVE: local-discovery,compose
+    restart: on-failure
+  order-service:
+    image: achimiuk/ac-brewery-order-service
+    ports:
+      - 8081:8081
+    depends_on:
+      - eureka
+      - config
+      - jms
+      - zipkin
+      - beer-service
+    environment:
+      SPRING_APPLICATION_JSON: '{"spring": {"application": {"name":"order-service"},"cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
+      SPRING_PROFILES_ACTIVE: local-discovery,compose
+    restart: on-failure
+  inventory-failover:
+    image: achimiuk/ac-brewery-inventory-failover
+    ports:
+      - 8084:8084
+    depends_on:
+      - eureka
+      - config
+    environment:
+      SPRING_APPLICATION_JSON: '{ "spring" : { "application": {"name":"inventory-failover"},"cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
+      SPRING_PROFILES_ACTIVE: local-discovery,compose
+    restart: on-failure
+  gateway:
+    image: achimiuk/ac-brewery-gateway
+    ports:
+      - 9090:9090
+    depends_on:
+      - eureka
+      - config
+      - inventory-service
+      - inventory-failover
+      - beer-service
+      - order-service
+    environment:
+      SPRING_APPLICATION_JSON: '{ "spring" : { "application": {"name":"gateway"},"cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
+      SPRING_PROFILES_ACTIVE: local-discovery,compose
+    restart: on-failure
