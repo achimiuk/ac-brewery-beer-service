@@ -23,7 +23,7 @@ services:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka
       SPRING_APPLICATION_JSON: '{"eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka": "true"}, "instance": {"preferIpAddress": "true"}}}'
   inventory-service:
-    image: achimiuk/mssc-beer-inventory-service
+    image: achimiuk/ac-brewery-inventory-service
     ports:
       - 8082:8082
     depends_on:
@@ -35,7 +35,7 @@ services:
       SPRING_APPLICATION_JSON: '{ "spring" : { "application": {"name":"inventory-service"},"cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
       SPRING_PROFILES_ACTIVE: local-discovery,compose
   order-service:
-    image: achimiuk/mssc-beer-order-service
+    image: achimiuk/ac-brewery-order-service
     ports:
       - 8081:8081
     depends_on:
@@ -56,5 +56,5 @@ services:
       - jms
       - zipkin
     environment:
-      SPRING_APPLICATION_JSON: '{"spring": {"application": {"name":"mssc-beer-service"}, "cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
+      SPRING_APPLICATION_JSON: '{"spring": {"application": {"name":"beer-service"}, "cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
       SPRING_PROFILES_ACTIVE: local-discovery,compose
