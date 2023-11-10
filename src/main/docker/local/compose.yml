@@ -47,7 +47,7 @@ services:
       SPRING_APPLICATION_JSON: '{"spring": {"application": {"name":"order-service"},"cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
       SPRING_PROFILES_ACTIVE: local-discovery,compose
   beer-service:
-    image: achimiuk/mssc-beer-service
+    image: achimiuk/ac-brewery-beer-service
     ports:
       - 8080:8080
     depends_on:

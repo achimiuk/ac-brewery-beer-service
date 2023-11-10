@@ -1,13 +1,10 @@
-[![CircleCI](https://circleci.com/gh/springframeworkguru/mssc-beer-service.svg?style=svg)](https://circleci.com/gh/springframeworkguru/mssc-beer-service)
-# MSSC Beer Service
+# MSSC Beer Service (Copy)
 
-Source code in this repository is to support my online courses.
+For training purposes only, will be removed when course will end.
 
-Learn more about my courses below!
-* [Spring Boot Microservices with Spring Cloud](https://www.udemy.com/spring-boot-microservices-with-spring-cloud-beginner-to-guru/?couponCode=GIT_HUB2)
+Origin from https://github.com/springframeworkguru/mssc-beer-server
 
-
-# Default Port Mappings - For Single Host
+## Default Port Mappings - For Single Host
 | Service Name | Port | 
 | --------| -----|
 | Brewery Beer Service | 8080 |

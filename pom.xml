@@ -9,13 +9,13 @@
         <version>1.0.17.AC</version>
     </parent>
 
-    <artifactId>mssc-beer-service</artifactId>
+    <artifactId>ac-brewery-beer-service</artifactId>
 
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>mssc-beer-service</name>
+    <name>ac-brewery-beer-service</name>
 
-    <description>MSSC Beer Service</description>
+    <description>MSSC Beer Service (Copy)</description>
 
     <dependencies>
         <dependency>
