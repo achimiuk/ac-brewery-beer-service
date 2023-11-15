@@ -1,5 +1,0 @@
-imageTag: 7.17.3
-elasticsearchHosts: "https://elastic-master:9200"
-elasticsearchCertificateSecret: elastic-master-certs
-elasticsearchCredentialSecret: elastic-master-credentials
-
