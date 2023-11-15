@@ -7,6 +7,8 @@ services:
     environment:
       discovery.type: 'single-node'
       ES_JAVA_OPTS: "-Xms1024m -Xmx1024m"
+    volumes:
+      - /opt/users/arsky/work/docker/brewery/local-logging/elasticsearch/data:/usr/share/elasticsearch/data
   kibana:
     image: docker.elastic.co/kibana/kibana:7.11.1
     ports:

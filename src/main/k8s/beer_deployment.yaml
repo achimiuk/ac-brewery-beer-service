@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ac-brewery-beer-deployment
+  labels:
+    app: ac-brewery-beer
+    log_system: kibana_json
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ac-brewery-beer
+  template:
+    metadata:
+      labels:
+        app: ac-brewery-beer
+        log_system: kibana_json
+    spec:
+      containers:
+      - name: ac-brewery-beer
+        image: achimiuk/ac-brewery-beer-service
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_APPLICATION_JSON
+          value: '{"spring": {"artemis": { "host" : "artemis-broker-hdls-svc", "port" : 61616 }, "application": {"name":"beer-service"}, "cloud": {"config": {"fail-fast": "true", "username": "MyUserName", "password": "MySecretPassword", "discovery": {"enabled":  "true", "serviceId": "ac-brewery-config-server"}}}}, "eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka-service:8761/eureka"}, "region": "default", "registerWithEureka" : "true"}, "instance": {"preferIpAddress" : "true"}}}'
+        - name: SPRING_PROFILES_ACTIVE
+          value: local-discovery,minikube

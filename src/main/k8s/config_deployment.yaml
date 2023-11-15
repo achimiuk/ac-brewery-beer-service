@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ac-brewery-config-deployment
+  labels:
+    app: ac-brewery-config
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ac-brewery-config
+  template:
+    metadata:
+      labels:
+        app: ac-brewery-config
+    spec:
+      containers:
+      - name: ac-brewery-config
+        image: achimiuk/ac-brewery-config-server
+        ports:
+        - containerPort: 8888
+        env:
+        - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+          value: "http://netflix:eureka@eureka-service:8761/eureka"
+        - name: SPRING_APPLICATION_JSON
+          value: '{"eureka": {"client": {"serviceUrl": {"defaultZone": "http://netflix:eureka@eureka-service:8761/eureka"}, "region": "default", "registerWithEureka": "true"}, "instance": {"preferIpAddress": "true"}}}'
